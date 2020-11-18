@@ -30,9 +30,29 @@ describe('WeatherScraper', function() {
     };
 
     const url = 'https://tenki.jp/forecast/3/16/4410/13103/';
-    const forecastSummary = scraper.getForecastSummary(locationIds);
+    const output = scraper.getForecastSummary(locationIds);
+    const expected = {
+      'forecasts': {
+        'today': {
+          'date': '今日 11月17日(火)[赤口]',
+          'temps': {
+            'max': '21℃ [-1]',
+            'min': '13℃ [+3]',
+          },
+          'weather': '晴',
+        },
+        'tomorrow': {
+          'date': '明日 11月18日(水)[先勝]',
+          'temps': {
+            'max': '20℃ [-1]',
+            'min': '10℃ [-3]',
+          },
+          'weather': '晴時々曇',
+        },
+      },
+    };
 
     expect(stub).to.have.been.calledWith(url);
-    expect(forecastSummary).to.equal('晴');
+    expect(output).to.eql(expected);
   });
 });
