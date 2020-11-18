@@ -32,6 +32,7 @@ describe('WeatherScraper', function() {
     const url = 'https://tenki.jp/forecast/3/16/4410/13103/';
     const output = scraper.getForecastSummary(locationIds);
     const expected = {
+      'city': '港区',
       'updateDateTime': '17日16:00',
       'forecasts': {
         'today': {
@@ -55,5 +56,7 @@ describe('WeatherScraper', function() {
 
     expect(stub).to.have.been.calledWith(url);
     expect(output).to.eql(expected);
+
+    stub.restore();
   });
 });
