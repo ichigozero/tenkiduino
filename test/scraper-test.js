@@ -32,6 +32,7 @@ describe('WeatherScraper', function() {
     const url = 'https://tenki.jp/forecast/3/16/4410/13103/';
     const output = scraper.getForecastSummary(locationIds);
     const expected = {
+      'updateDateTime': '17日16:00',
       'forecasts': {
         'today': {
           'date': '今日 11月17日(火)[赤口]',
