@@ -16,18 +16,17 @@ describe('WeatherScraper', function() {
       __dirname,
       'scraperTestFiles/forecastSummary.html',
   );
+  const locationIds = {
+    regionId: 3,
+    prefectureId: 16,
+    subPrefectureId: 4410,
+    cityId: 13103,
+  };
 
   it('should fetch weather forecast summary', function() {
     const stub = sinon.stub(scraper, '_fetchPage').callsFake(() => {
       scraper._$ = cheerio.load(fs.readFileSync(testFilePath));
     });
-
-    const locationIds = {
-      regionId: 3,
-      prefectureId: 16,
-      subPrefectureId: 4410,
-      cityId: 13103,
-    };
 
     const url = 'https://tenki.jp/forecast/3/16/4410/13103/';
     const output = scraper.getForecastSummary(locationIds);
@@ -56,6 +55,16 @@ describe('WeatherScraper', function() {
 
     expect(stub).to.have.been.calledWith(url);
     expect(output).to.eql(expected);
+
+    stub.restore();
+  });
+
+  it('should return null if forecast page cannot be fetched', function() {
+    const stub = sinon.stub(scraper, '_fetchPage').callsFake(() => {
+      scraper._$ = null;
+    });
+
+    expect(scraper.getForecastSummary(locationIds)).to.equal(null);
 
     stub.restore();
   });
