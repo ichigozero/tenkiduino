@@ -22,14 +22,19 @@ describe('WeatherScraper', function() {
     subPrefectureId: 4410,
     cityId: 13103,
   };
+  const sandbox = sinon.createSandbox();
 
-  it('should fetch weather forecast summary', function() {
-    const stub = sinon.stub(scraper, '_fetchPage').callsFake(() => {
+  afterEach(() => {
+    sandbox.restore();
+  });
+
+  it('should fetch weather forecast summary', async function() {
+    const stub = sandbox.stub(scraper, '_fetchPage').callsFake(() => {
       scraper._$ = cheerio.load(fs.readFileSync(testFilePath));
     });
 
     const url = 'https://tenki.jp/forecast/3/16/4410/13103/';
-    const output = scraper.getForecastSummary(locationIds);
+    const output = await scraper.getForecastSummary(locationIds);
     const expected = {
       'city': '港区',
       'updateDateTime': '17日16:00',
@@ -55,17 +60,13 @@ describe('WeatherScraper', function() {
 
     expect(stub).to.have.been.calledWith(url);
     expect(output).to.eql(expected);
-
-    stub.restore();
   });
 
-  it('should return null if forecast page cannot be fetched', function() {
-    const stub = sinon.stub(scraper, '_fetchPage').callsFake(() => {
+  it('should return null if forecast page cannot be fetched', async function() {
+    sandbox.stub(scraper, '_fetchPage').callsFake(() => {
       scraper._$ = null;
     });
 
-    expect(scraper.getForecastSummary(locationIds)).to.equal(null);
-
-    stub.restore();
+    expect(await scraper.getForecastSummary(locationIds)).to.equal(null);
   });
 });
