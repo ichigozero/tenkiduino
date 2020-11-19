@@ -1,0 +1,41 @@
+const sinon = require('sinon');
+const sinonChai = require('sinon-chai');
+const chai = require('chai');
+const expect = chai.expect;
+
+chai.use(sinonChai);
+
+const {Led} = require('johnny-five');
+const WeatherLed = require('../lib/led');
+
+describe('WeatherLed', function() {
+  const weatherLed = new WeatherLed({
+    fine: sinon.createStubInstance(Led),
+    cloud: sinon.createStubInstance(Led),
+    rain: sinon.createStubInstance(Led),
+    snow: sinon.createStubInstance(Led),
+  });
+
+  describe('operateFineLed()', function() {
+    it('should turn on LED if weather string starts with 晴', function() {
+      weatherLed.operateFineLed('晴れ');
+      expect(weatherLed._leds.fine.on).to.have.been.calledOnce;
+    });
+
+    it('should pulse LED if weather string contains のち晴', function() {
+      weatherLed.operateFineLed('雨のち晴');
+      expect(weatherLed._leds.fine.pulse).to.have.been.calledOnce;
+    });
+
+    it('should blink LED if weather string contains 時々晴', function() {
+      weatherLed.operateFineLed('雨時々晴');
+      expect(weatherLed._leds.fine.blink)
+          .to.have.been.calledOnceWithExactly(weatherLed._blinkInterval);
+    });
+
+    it('should turn off LED for other weather string patterns ', function() {
+      weatherLed.operateFineLed('雨');
+      expect(weatherLed._leds.fine.off).to.have.been.calledOnce;
+    });
+  });
+});
