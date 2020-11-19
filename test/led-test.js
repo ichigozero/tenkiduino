@@ -38,4 +38,27 @@ describe('WeatherLed', function() {
       expect(weatherLed._leds.fine.off).to.have.been.calledOnce;
     });
   });
+
+  describe('operateCloudLed()', function() {
+    it('should turn on LED if weather string starts with 曇', function() {
+      weatherLed.operateCloudLed('曇り');
+      expect(weatherLed._leds.cloud.on).to.have.been.calledOnce;
+    });
+
+    it('should pulse LED if weather string contains のち曇', function() {
+      weatherLed.operateCloudLed('雨のち曇');
+      expect(weatherLed._leds.cloud.pulse).to.have.been.calledOnce;
+    });
+
+    it('should blink LED if weather string contains 時々曇', function() {
+      weatherLed.operateCloudLed('雨時々曇');
+      expect(weatherLed._leds.cloud.blink)
+          .to.have.been.calledOnceWithExactly(weatherLed._blinkInterval);
+    });
+
+    it('should turn off LED for other weather string patterns ', function() {
+      weatherLed.operateCloudLed('雨');
+      expect(weatherLed._leds.cloud.off).to.have.been.calledOnce;
+    });
+  });
 });
