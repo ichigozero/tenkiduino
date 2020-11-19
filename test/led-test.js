@@ -61,4 +61,27 @@ describe('WeatherLed', function() {
       expect(weatherLed._leds.cloud.off).to.have.been.calledOnce;
     });
   });
+
+  describe('operateRainLed()', function() {
+    it('should turn on LED if weather string starts with 雨', function() {
+      weatherLed.operateRainLed('雨');
+      expect(weatherLed._leds.rain.on).to.have.been.calledOnce;
+    });
+
+    it('should pulse LED if weather string contains のち雨', function() {
+      weatherLed.operateRainLed('晴のち雨');
+      expect(weatherLed._leds.rain.pulse).to.have.been.calledOnce;
+    });
+
+    it('should blink LED if weather string contains 時々雨', function() {
+      weatherLed.operateRainLed('晴時々雨');
+      expect(weatherLed._leds.rain.blink)
+          .to.have.been.calledOnceWithExactly(weatherLed._blinkInterval);
+    });
+
+    it('should turn off LED for other weather string patterns ', function() {
+      weatherLed.operateRainLed('晴れ');
+      expect(weatherLed._leds.rain.off).to.have.been.calledOnce;
+    });
+  });
 });
