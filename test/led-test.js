@@ -107,4 +107,31 @@ describe('WeatherLed', function() {
       expect(weatherLed._leds.snow.off).to.have.been.calledOnce;
     });
   });
+
+  describe('_normalizeWeatherString()', function() {
+    it('should remove 大 character', function() {
+      expect(weatherLed._normalizeWeatherString('大雨')).to.equal('雨');
+    });
+
+    it('should remove 暴風 characters', function() {
+      expect(weatherLed._normalizeWeatherString('暴風雨')).to.equal('雨');
+    });
+
+    it('should remove 雷 characters', function() {
+      expect(weatherLed._normalizeWeatherString('晴のち雷雨')).to.equal('晴のち雨');
+    });
+
+    it('should replace 一時 with 時々', function() {
+      expect(weatherLed._normalizeWeatherString('曇一時雨'))
+          .to.equal('曇時々雨');
+    });
+
+    it('should replace 雨か雪 with 雨', function() {
+      expect(weatherLed._normalizeWeatherString('雨か雪')).to.equal('雨');
+    });
+
+    it('should replace 雪か雨 with 雪', function() {
+      expect(weatherLed._normalizeWeatherString('雪か雨')).to.equal('雪');
+    });
+  });
 });
