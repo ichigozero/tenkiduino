@@ -6,7 +6,7 @@ const Oled = require('oled-js');
 
 const WeatherLed = require('./lib/led');
 const WeatherScraper =require('./lib/scraper');
-const generateOledFont = require('./lib/display');
+const {generateOledFont} = require('./lib/display');
 
 const updateInterval = 60 * 60 * 1000; // milliseconds
 const font = 'k8x12';
