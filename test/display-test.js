@@ -1,7 +1,7 @@
 const chai = require('chai');
 const expect = chai.expect;
 
-const {calculateOledMaxRow} = require('../lib/display');
+const {calculateOledMaxRow, calculateOledTopMargin} = require('../lib/display');
 
 describe('calculateOledMaxRow()', function() {
   it('should return 0 if OLED height < text height', function() {
@@ -38,5 +38,16 @@ describe('calculateOledMaxRow()', function() {
         textRowCount=5,
     );
     expect(output).to.equal(3);
+  });
+});
+
+describe('calculateOledTopMargin()', function() {
+  it('should return val which center displayed text', function() {
+    const output = calculateOledTopMargin(
+        oledHeight=64,
+        fontHeight=12,
+        oledMaxRow=4,
+    );
+    expect(output).to.equal(7);
   });
 });
