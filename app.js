@@ -55,7 +55,9 @@ function main() {
           fontSize,
           text=[
             summary.city,
+            summary.updateDateTime,
             weather,
+            summary.forecasts.today.date,
             '最高: ' + summary.forecasts.today.temps.max,
             '最低: ' + summary.forecasts.today.temps.min,
           ],
@@ -71,6 +73,7 @@ function main() {
 
     board.on('exit', () => {
       weatherLed.turnOffWeatherLeds();
+      oled.clearDisplay();
       oled.turnOffDisplay();
     });
   });

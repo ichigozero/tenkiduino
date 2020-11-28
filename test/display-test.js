@@ -6,6 +6,10 @@ const OledDisplay = require('../lib/display');
 describe('OledDisplay', function() {
   const oledDisplay = new OledDisplay();
 
+  beforeEach(function() {
+    oledDisplay._hasPageRow = false;
+  });
+
   describe('calculateMaxRow()', function() {
     it('should return 0 if OLED height < text height', function() {
       const output = oledDisplay._calculateMaxRow(
@@ -45,13 +49,23 @@ describe('OledDisplay', function() {
   });
 
   describe('calculateTopMargin()', function() {
-    it('should return val which center displayed text', function() {
+    it('should center displayed text (without pagination row)', function() {
       const output = oledDisplay._calculateTopMargin(
           oledHeight=64,
           fontHeight=12,
           oledMaxRow=4,
       );
       expect(output).to.equal(7);
+    });
+
+    it('should center displayed text (with pagination row)', function() {
+      oledDisplay._hasPageRow = true;
+      const output = oledDisplay._calculateTopMargin(
+          oledHeight=64,
+          fontHeight=12,
+          oledMaxRow=4,
+      );
+      expect(output).to.equal(0.5);
     });
   });
 });
