@@ -6,9 +6,9 @@ const OledDisplay = require('../lib/display');
 describe('OledDisplay', function() {
   const oledDisplay = new OledDisplay();
 
-  describe('calculateOledMaxRow()', function() {
+  describe('calculateMaxRow()', function() {
     it('should return 0 if OLED height < text height', function() {
-      const output = oledDisplay._calculateOledMaxRow(
+      const output = oledDisplay._calculateMaxRow(
           oledHeight=16,
           fontHeight=24,
           textRowCount=1,
@@ -17,7 +17,7 @@ describe('OledDisplay', function() {
     });
 
     it('should return 1 if OLED height 1~1.9  text height', function() {
-      const output = oledDisplay._calculateOledMaxRow(
+      const output = oledDisplay._calculateMaxRow(
           oledHeight=23,
           fontHeight=12,
           textRowCount=1,
@@ -26,7 +26,7 @@ describe('OledDisplay', function() {
     });
 
     it('should return 4 if OLED height 4x text height', function() {
-      const output = oledDisplay._calculateOledMaxRow(
+      const output = oledDisplay._calculateMaxRow(
           oledHeight=64,
           fontHeight=12,
           textRowCount=4,
@@ -35,7 +35,7 @@ describe('OledDisplay', function() {
     });
 
     it('should reserve 1 row for page number', function() {
-      const output = oledDisplay._calculateOledMaxRow(
+      const output = oledDisplay._calculateMaxRow(
           oledHeight=64,
           fontHeight=12,
           textRowCount=5,
@@ -44,9 +44,9 @@ describe('OledDisplay', function() {
     });
   });
 
-  describe('calculateOledTopMargin()', function() {
+  describe('calculateTopMargin()', function() {
     it('should return val which center displayed text', function() {
-      const output = oledDisplay._calculateOledTopMargin(
+      const output = oledDisplay._calculateTopMargin(
           oledHeight=64,
           fontHeight=12,
           oledMaxRow=4,
