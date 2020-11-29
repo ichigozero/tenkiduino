@@ -18,7 +18,6 @@ registerFont('./font/k8x12.ttf', {family: font});
 function main() {
   const board = new five.Board();
   const weatherScraper = new WeatherScraper();
-  const oledDisplay = new OledDisplay();
 
   board.on('ready', async () => {
     const opts = {
@@ -28,6 +27,7 @@ function main() {
     };
 
     const oled = new Oled(board, five, opts);
+    const button = new five.Button(2);
 
     const locationIds = {
       regionId: 3,
@@ -42,6 +42,8 @@ function main() {
       rain: new five.Led(7),
       snow: new five.Led(5),
     });
+
+    const oledDisplay = new OledDisplay(oled);
 
     async function displayForecast() {
       const summary = await weatherScraper.getForecastSummary(locationIds);
@@ -62,7 +64,7 @@ function main() {
             '最低: ' + summary.forecasts.today.temps.min,
           ],
       );
-      oledDisplay.writeText(oled);
+      oledDisplay.writeText();
     }
 
     await displayForecast();
@@ -70,6 +72,10 @@ function main() {
     setInterval(async () => {
       await displayForecast();
     }, updateInterval);
+
+    button.on('down', function() {
+      oledDisplay.showNextPage();
+    });
 
     board.on('exit', () => {
       weatherLed.turnOffWeatherLeds();
