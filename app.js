@@ -12,6 +12,8 @@ const updateInterval = 60 * 60 * 1000; // milliseconds
 const font = 'k8x12';
 const fontSize = 12;
 const oledHeight = 64;
+let isTodayForecast = true;
+let isButtonHeld = false;
 
 registerFont('./font/k8x12.ttf', {family: font});
 
@@ -44,12 +46,18 @@ function main() {
     });
 
     const oledDisplay = new OledDisplay(oled);
+    let summary = await weatherScraper.getForecastSummary(locationIds);
 
-    async function displayForecast() {
-      const summary = await weatherScraper.getForecastSummary(locationIds);
-      const weather = summary.forecasts.today.weather;
+    function outputForecast() {
+      let forecast = null;
 
-      weatherLed.operateWeatherLeds(weather);
+      if (isTodayForecast) {
+        forecast = summary.forecasts.today;
+      } else {
+        forecast = summary.forecasts.tomorrow;
+      }
+
+      weatherLed.operateWeatherLeds(forecast.weather);
 
       oledDisplay.init(
           oledHeight,
@@ -58,23 +66,36 @@ function main() {
           text=[
             summary.city,
             summary.updateDateTime,
-            weather,
-            summary.forecasts.today.date,
-            '最高: ' + summary.forecasts.today.temps.max,
-            '最低: ' + summary.forecasts.today.temps.min,
+            forecast.weather,
+            forecast.date,
+            '最高: ' + forecast.temps.max,
+            '最低: ' + forecast.temps.min,
           ],
       );
       oledDisplay.writeText();
     }
 
-    await displayForecast();
+    outputForecast();
 
     setInterval(async () => {
-      await displayForecast();
+      summary = await weatherScraper.getForecastSummary(locationIds);
+      outputForecast();
     }, updateInterval);
 
-    button.on('down', function() {
+    button.on('press', function() {
       oledDisplay.showNextPage();
+    });
+
+    button.on('hold', async function() {
+      if (!isButtonHeld) {
+        isButtonHeld = true;
+        isTodayForecast = !isTodayForecast;
+        outputForecast();
+      }
+    });
+
+    button.on('release', function() {
+      if (isButtonHeld) isButtonHeld = false;
     });
 
     board.on('exit', () => {
