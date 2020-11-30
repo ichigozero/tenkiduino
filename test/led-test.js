@@ -44,6 +44,7 @@ describe('WeatherLed', function() {
 
     it('should turn off LED for other weather string patterns ', function() {
       weatherLed._operateFineLed('雨');
+      expect(weatherLed._leds.fine.stop).to.have.been.calledOnce;
       expect(weatherLed._leds.fine.off).to.have.been.calledOnce;
     });
   });
@@ -67,6 +68,7 @@ describe('WeatherLed', function() {
 
     it('should turn off LED for other weather string patterns ', function() {
       weatherLed._operateCloudLed('雨');
+      expect(weatherLed._leds.cloud.stop).to.have.been.calledOnce;
       expect(weatherLed._leds.cloud.off).to.have.been.calledOnce;
     });
   });
@@ -90,6 +92,7 @@ describe('WeatherLed', function() {
 
     it('should turn off LED for other weather string patterns ', function() {
       weatherLed._operateRainLed('晴れ');
+      expect(weatherLed._leds.rain.stop).to.have.been.calledOnce;
       expect(weatherLed._leds.rain.off).to.have.been.calledOnce;
     });
   });
@@ -113,6 +116,7 @@ describe('WeatherLed', function() {
 
     it('should turn off LED for other weather string patterns ', function() {
       weatherLed._operateSnowLed('晴れ');
+      expect(weatherLed._leds.snow.stop).to.have.been.calledOnce;
       expect(weatherLed._leds.snow.off).to.have.been.calledOnce;
     });
   });
@@ -138,6 +142,11 @@ describe('WeatherLed', function() {
   describe('turnOffWeatherLeds()', function() {
     it('should turn off all LEDs', function() {
       weatherLed.turnOffWeatherLeds();
+
+      expect(weatherLed._leds.fine.stop).to.have.been.calledOnce;
+      expect(weatherLed._leds.cloud.stop).to.have.been.calledOnce;
+      expect(weatherLed._leds.rain.stop).to.have.been.calledOnce;
+      expect(weatherLed._leds.snow.stop).to.have.been.calledOnce;
 
       expect(weatherLed._leds.fine.off).to.have.been.calledOnce;
       expect(weatherLed._leds.cloud.off).to.have.been.calledOnce;
