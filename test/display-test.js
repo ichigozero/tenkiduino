@@ -20,7 +20,7 @@ describe('OledDisplay', function() {
       expect(output).to.equal(0);
     });
 
-    it('should return 1 if OLED height 1~1.9  text height', function() {
+    it('should return 1 if OLED height 1~1.9 text height', function() {
       const output = oledDisplay._calculateMaxRow(
           oledHeight=23,
           fontHeight=12,

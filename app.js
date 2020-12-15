@@ -11,7 +11,6 @@ const OledDisplay = require('./lib/display');
 const updateInterval = 60 * 60 * 1000; // milliseconds
 const font = 'k8x12';
 const fontSize = 12;
-const oledHeight = 64;
 let isTodayForecast = true;
 let isButtonHeld = false;
 
@@ -24,7 +23,7 @@ function main() {
   board.on('ready', async () => {
     const opts = {
       width: 128,
-      height: oledHeight,
+      height: 64,
       address: 0x3C,
     };
 
@@ -60,7 +59,6 @@ function main() {
       weatherLed.operateWeatherLeds(forecast.weather);
 
       oledDisplay.init(
-          oledHeight,
           font,
           fontSize,
           text=[
