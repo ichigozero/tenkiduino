@@ -11,6 +11,8 @@ $ npm install . \
 # Wiring
 See below diagram for wiring reference.
 
+![wiring](/diagram/wiring.png)
+
 # Usage
 ```bash
 node app.js URL [OPTIONS]
