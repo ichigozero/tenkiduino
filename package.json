@@ -4,9 +4,12 @@
   "description": "Arduino weather station build with Nodejs",
   "main": "app.js",
   "dependencies": {
+    "canvas": "^2.6.1",
     "cheerio": "^1.0.0-rc.3",
     "got": "^11.8.0",
-    "johnny-five": "^2.0.0"
+    "johnny-five": "^2.0.0",
+    "oled-js": "https://github.com/ichigozero/oled-js/tarball/support-multibyte-font",
+    "yargs": "^16.2.0"
   },
   "devDependencies": {
     "chai": "^4.2.0",
