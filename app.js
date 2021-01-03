@@ -41,7 +41,7 @@ function main(yargs) {
     };
 
     const oled = new Oled(board, five, opts);
-    const button = new five.Button(yargs.buttonPin);
+    const button = new five.Button(yargs.pinButton);
     const weatherLed = new WeatherLed({
       fine: new five.Led(yargs.pinFine),
       cloud: new five.Led(yargs.pinCloud),
@@ -50,7 +50,7 @@ function main(yargs) {
     });
 
     const oledDisplay = new OledDisplay(oled);
-    let summary = await weatherScraper.getForecastSummary(yargs.url);
+    let summary = await weatherScraper.getForecastSummary(yargs._[0]);
 
     function outputForecast() {
       let forecast = null;
@@ -159,4 +159,4 @@ const yargs = require('yargs/yargs')(process.argv.slice(2))
     .alias('h', 'help')
     .argv;
 
-main(yargs).catch(console.dir);
+main(yargs);
