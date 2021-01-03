@@ -16,7 +16,7 @@ let isButtonHeld = false;
 
 registerFont('./font/k8x12.ttf', {family: font});
 
-function main() {
+function main(yargs) {
   const board = new five.Board();
   const weatherScraper = new WeatherScraper();
 
@@ -24,28 +24,20 @@ function main() {
     const opts = {
       width: 128,
       height: 64,
-      address: 0x3C,
+      address: yargs.oledAddress,
     };
 
     const oled = new Oled(board, five, opts);
-    const button = new five.Button(2);
-
-    const locationIds = {
-      regionId: 3,
-      prefectureId: 16,
-      subPrefectureId: 4410,
-      cityId: 13103,
-    };
-
+    const button = new five.Button(yargs.buttonPin);
     const weatherLed = new WeatherLed({
-      fine: new five.Led(11),
-      cloud: new five.Led(9),
-      rain: new five.Led(7),
-      snow: new five.Led(5),
+      fine: new five.Led(yargs.pinFine),
+      cloud: new five.Led(yargs.pinCloud),
+      rain: new five.Led(yargs.pinRain),
+      snow: new five.Led(yargs.pinSnow),
     });
 
     const oledDisplay = new OledDisplay(oled);
-    let summary = await weatherScraper.getForecastSummary(locationIds);
+    let summary = await weatherScraper.getForecastSummary(yargs.url);
 
     function outputForecast() {
       let forecast = null;
@@ -64,8 +56,8 @@ function main() {
           text=[
             summary.city,
             summary.updateDateTime,
-            forecast.weather,
             forecast.date,
+            forecast.weather,
             '最高: ' + forecast.temps.max,
             '最低: ' + forecast.temps.min,
           ],
@@ -104,4 +96,48 @@ function main() {
   });
 }
 
-main();
+const yargs = require('yargs/yargs')(process.argv.slice(2))
+    .usage('Usage: $0 <command> [options]')
+    .command('url', 'tenki.jp weather page URL')
+    .example(
+        '$0 https://tenki.jp/forecast/3/16/4410/13103/',
+        'Display Minato ward of Tokyo weather information',
+    )
+    .demandCommand(1)
+    .options({
+      'pinFine': {
+        description: 'Digital pin number for Fine LED',
+        default: 11,
+        alias: 'pf',
+      },
+      'pinCloud': {
+        description: 'Digital pin number for Cloud LED',
+        default: 9,
+        alias: 'pc',
+      },
+      'pinRain': {
+        description: 'Digital pin number for Rain LED',
+        default: 7,
+        alias: 'pr',
+      },
+      'pinSnow': {
+        description: 'Digital pin number for Snow LED',
+        default: 5,
+        alias: 'ps',
+      },
+      'pinButton': {
+        description: 'Digital pin number for push button',
+        default: 2,
+        alias: 'pb',
+      },
+      'oledAddress': {
+        description: 'OLED I2C Address',
+        default: 0x3C,
+        alias: 'oa',
+      },
+    })
+    .help('h')
+    .alias('h', 'help')
+    .argv;
+
+main(yargs).catch(console.dir);
