@@ -8,7 +8,6 @@ const WeatherLed = require('./lib/led');
 const WeatherScraper =require('./lib/scraper');
 const OledDisplay = require('./lib/display');
 
-const updateInterval = 60 * 60 * 1000; // milliseconds
 const font = 'k8x12';
 const fontSize = 12;
 let isTodayForecast = true;
@@ -67,10 +66,11 @@ function main(yargs) {
 
     outputForecast();
 
+    const interval = yargs.refresh * 60 * 1000; // milliseconds
     setInterval(async () => {
       summary = await weatherScraper.getForecastSummary(locationIds);
       outputForecast();
-    }, updateInterval);
+    }, interval);
 
     button.on('press', function() {
       oledDisplay.showNextPage();
@@ -105,35 +105,40 @@ const yargs = require('yargs/yargs')(process.argv.slice(2))
     )
     .demandCommand(1)
     .options({
+      'refresh': {
+        description: 'Refresh interval in minutes',
+        default: 60,
+        alias: 'R',
+      },
       'pinFine': {
         description: 'Digital pin number for Fine LED',
         default: 11,
-        alias: 'pf',
+        alias: 'f',
       },
       'pinCloud': {
         description: 'Digital pin number for Cloud LED',
         default: 9,
-        alias: 'pc',
+        alias: 'c',
       },
       'pinRain': {
         description: 'Digital pin number for Rain LED',
         default: 7,
-        alias: 'pr',
+        alias: 'r',
       },
       'pinSnow': {
         description: 'Digital pin number for Snow LED',
         default: 5,
-        alias: 'ps',
+        alias: 's',
       },
       'pinButton': {
         description: 'Digital pin number for push button',
         default: 2,
-        alias: 'pb',
+        alias: 'b',
       },
       'oledAddress': {
         description: 'OLED I2C Address',
         default: 0x3C,
-        alias: 'oa',
+        alias: 'a',
       },
     })
     .help('h')

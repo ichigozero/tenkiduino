@@ -24,18 +24,20 @@ node app.js "https://tenki.jp/forecast/3/16/4410/13103/"
 
 ## OPTIONS
 ```
-    -h, --help                      Print this help text and exit
     --version                       Print program version and exit
-    --pinFine, --pf                 Digital pin number for Fine LED.
+    -h, --help                      Print this help text and exit
+    -R, --refresh                   Refresh interval in minutes.
+                                    Default: 60
+    -f, --pinFine                   Digital pin number for Fine LED.
                                     Default: 11
-    --pinCloud, --pc                Digital pin number for Cloud LED.
+    -c, --pinCloud                  Digital pin number for Cloud LED.
                                     Default: 9
-    --pinRain, --pr                 Digital pin number for Rain LED.
+    -r, --pinRain                   Digital pin number for Rain LED.
                                     Default: 7
-    --pinSnow, --ps                 Digital pin number for Snow LED.
+    -s, --pinSnow                   Digital pin number for Snow LED.
                                     Default: 5
-    --pinButton, --pb               Digital pin number for push button.
+    -b, --pinButton                 Digital pin number for push button.
                                     Default: 2
-    --oledAddress, --oa             OLED I2C Address.
+    -a, --oledAddress               OLED I2C Address.
                                     Default: 0x3C
 ```
