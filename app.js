@@ -16,6 +16,20 @@ let isButtonHeld = false;
 registerFont('./font/k8x12.ttf', {family: font});
 
 function main(yargs) {
+  const pinNumbers = [
+    yargs.pinFine,
+    yargs.pinCloud,
+    yargs.pinRain,
+    yargs.pinSnow,
+    yargs.pinButton,
+  ];
+
+  if (new Set(pinNumbers).size != pinNumbers.length) {
+    console.log('Pin numbers must be unique!');
+    console.log('Aborting...');
+    return;
+  }
+
   const board = new five.Board();
   const weatherScraper = new WeatherScraper();
 
