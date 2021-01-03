@@ -100,7 +100,7 @@ const yargs = require('yargs/yargs')(process.argv.slice(2))
     .usage('Usage: $0 <command> [options]')
     .command('url', 'tenki.jp weather page URL')
     .example(
-        '$0 https://tenki.jp/forecast/3/16/4410/13103/',
+        '$0 "https://tenki.jp/forecast/3/16/4410/13103/"',
         'Display Minato ward of Tokyo weather information',
     )
     .demandCommand(1)
