@@ -41,7 +41,11 @@ function main(yargs) {
     };
 
     const oled = new Oled(board, five, opts);
-    const button = new five.Button(yargs.pinButton);
+    const button = new five.Button({
+      board: board,
+      pin: yargs.pinButton,
+      holdtime: 5000,
+    });
     const weatherLed = new WeatherLed({
       fine: new five.Led(yargs.pinFine),
       cloud: new five.Led(yargs.pinCloud),
@@ -90,7 +94,7 @@ function main(yargs) {
       oledDisplay.showNextPage();
     });
 
-    button.on('hold', async function() {
+    button.on('hold', function() {
       if (!isButtonHeld) {
         isButtonHeld = true;
         isTodayForecast = !isTodayForecast;
@@ -99,7 +103,9 @@ function main(yargs) {
     });
 
     button.on('release', function() {
-      if (isButtonHeld) isButtonHeld = false;
+      if (isButtonHeld) {
+        isButtonHeld = false;
+      }
     });
 
     board.on('exit', () => {
