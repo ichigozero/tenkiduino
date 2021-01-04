@@ -67,3 +67,8 @@ node app.js "https://tenki.jp/forecast/3/16/4410/13103/"
     -a, --oledAddress               OLED I2C Address.
                                     Default: 0x3C
 ```
+
+# Acknowledgements
+
+Credit to [Suz Hinton](https://github.com/noopkat) for OLED related
+Javascript library.
