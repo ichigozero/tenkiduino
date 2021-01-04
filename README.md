@@ -1,5 +1,13 @@
 # About
-Arduino weather station built with Nodejs
+Arduino weather station built with Nodejs. This app will pull weather
+information from Japanese weather website tenki.jp and display them
+with the use of LEDs and OLED display.
+
+# Hardware
+- Arduino UNO
+- 128x64 I2C OLED display
+- 4 LEDs
+- 1 push button
 
 # Installation
 ```bash
@@ -13,7 +21,16 @@ See below diagram for wiring reference.
 
 ![wiring](/diagram/wiring.png)
 
+# Example
+Click below links for actual example.
+
+[today-page-1](/diagram/tenkiduino_today_p1.jpg)\
+[today-page-2](/diagram/tenkiduino_today_p2.jpg)\
+[tomorrow-page-1](/diagram/tenkiduino_tmr_p1.jpg)\
+[tomorrow-page-2](/diagram/tenkiduino_tmr_p2.jpg)
+
 # Usage
+## Command
 ```bash
 node app.js URL [OPTIONS]
 ```
@@ -23,6 +40,13 @@ Run the following command to display Minato ward of Tokyo weather information.
 ```bash
 node app.js "https://tenki.jp/forecast/3/16/4410/13103/"
 ```
+
+## Controlling OLED display
+
+- Display weather information in the next page
+    - Press the button
+- Display today/tomorrow weather information
+    - Hold the button for 5 seconds
 
 ## OPTIONS
 ```
